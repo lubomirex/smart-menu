@@ -1,3 +1,8 @@
-﻿export default function Footer() {
-  return <footer className="footer"><span>SmartMenuAI for restaurants, cafes, and quick-service teams.</span><span>Built for QR ordering and faster service.</span></footer>;
+export default function Footer() {
+  return (
+    <footer className="footer">
+      <span>SmartMenuAI pre reštaurácie, kaviarne a bistrá.</span>
+      <span>QR objednávanie, menu a odporúčania v jednom.</span>
+    </footer>
+  );
 }

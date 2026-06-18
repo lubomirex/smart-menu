@@ -1,8 +1,12 @@
-﻿import { Router } from "express";
-import { createProduct, deleteProduct, getProduct, getProducts, updateProduct } from "../controllers/productController.js";
+import { Router } from "express";
+import { createProduct, deleteProduct, getAdminProducts, getProduct, getProducts, updateProduct } from "../controllers/productController.js";
+import { requireAdmin } from "../middleware/authMiddleware.js";
+
 export const productRoutes = Router();
+
 productRoutes.get("/", getProducts);
+productRoutes.get("/admin/all", requireAdmin, getAdminProducts);
 productRoutes.get("/:id", getProduct);
-productRoutes.post("/", createProduct);
-productRoutes.put("/:id", updateProduct);
-productRoutes.delete("/:id", deleteProduct);
+productRoutes.post("/", requireAdmin, createProduct);
+productRoutes.put("/:id", requireAdmin, updateProduct);
+productRoutes.delete("/:id", requireAdmin, deleteProduct);

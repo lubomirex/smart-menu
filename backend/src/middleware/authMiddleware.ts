@@ -12,3 +12,10 @@ export function optionalAuth(req: Request, _res: Response, next: NextFunction) {
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
   optionalAuth(req, res, () => { if (!req.user) return res.status(401).json({ message: "Authentication required" }); next(); });
 }
+
+export function requireAdmin(req: Request, res: Response, next: NextFunction) {
+  requireAuth(req, res, () => {
+    if (req.user?.role !== "ADMIN") return res.status(403).json({ message: "Admin access required" });
+    next();
+  });
+}

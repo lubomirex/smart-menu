@@ -8,6 +8,10 @@ const statusSchema = z.object({ status: z.nativeEnum(OrderStatus) });
 
 type OrderWithRelations = Prisma.OrderGetPayload<{ include: { customer: true; table: true; items: { include: { product: true } } } }>;
 
+function paramId(req: Request) {
+  return z.string().parse(req.params.id);
+}
+
 function serializeOrder(order: OrderWithRelations) {
   return { ...order, totalPrice: Number(order.totalPrice), items: order.items.map((item) => ({ ...item, price: Number(item.price), product: { ...item.product, price: Number(item.product.price) } })) };
 }
@@ -18,7 +22,7 @@ export async function getOrders(_req: Request, res: Response) {
 }
 
 export async function getOrder(req: Request, res: Response) {
-  const order = await prisma.order.findUnique({ where: { id: req.params.id }, include: { customer: true, table: true, items: { include: { product: true } } } });
+  const order = await prisma.order.findUnique({ where: { id: paramId(req) }, include: { customer: true, table: true, items: { include: { product: true } } } });
   if (!order) return res.status(404).json({ message: "Order not found" });
   return res.json(serializeOrder(order));
 }
@@ -35,6 +39,36 @@ export async function createOrder(req: Request, res: Response) {
 
 export async function updateOrderStatus(req: Request, res: Response) {
   const data = statusSchema.parse(req.body);
-  const order = await prisma.order.update({ where: { id: req.params.id }, data, include: { customer: true, table: true, items: { include: { product: true } } } });
+  const order = await prisma.order.update({ where: { id: paramId(req) }, data, include: { customer: true, table: true, items: { include: { product: true } } } });
   return res.json(serializeOrder(order));
+}
+
+export async function getOrderAnalytics(_req: Request, res: Response) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const [orders, topProducts] = await Promise.all([
+    prisma.order.findMany({
+      where: { status: { not: OrderStatus.CANCELLED } },
+      select: { totalPrice: true, createdAt: true }
+    }),
+    prisma.orderItem.groupBy({
+      by: ["productId"],
+      _sum: { quantity: true },
+      orderBy: { _sum: { quantity: "desc" } },
+      take: 10
+    })
+  ]);
+
+  const dailyOrders = orders.filter((order) => order.createdAt >= today);
+  const dailyRevenue = dailyOrders.reduce((sum, order) => sum + Number(order.totalPrice), 0);
+  const totalRevenue = orders.reduce((sum, order) => sum + Number(order.totalPrice), 0);
+
+  return res.json({
+    dailyRevenue,
+    orderCount: orders.length,
+    dailyOrderCount: dailyOrders.length,
+    averageOrderValue: orders.length ? totalRevenue / orders.length : 0,
+    topProducts: topProducts.map((item) => ({ productId: item.productId, quantity: item._sum.quantity ?? 0 }))
+  });
 }
