@@ -1,4 +1,4 @@
-﻿services:
+services:
   postgres:
     image: postgres:16-alpine
     container_name: smartmenuai-postgres
@@ -11,7 +11,7 @@
       - "5432:5432"
     volumes:
       - smartmenuai-postgres:/var/lib/postgresql/data
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro,z
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U smartmenu -d smartmenuai"]
       interval: 10s
