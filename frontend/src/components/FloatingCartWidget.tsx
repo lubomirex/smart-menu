@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { ShoppingCart } from "lucide-react";
 import type { CartLine } from "../types";
 import { readGuestCart } from "../utils/guestStorage";
 
@@ -22,26 +23,17 @@ export default function FloatingCartWidget() {
     };
   }, []);
 
-  if (!isGuestArea || location.pathname === "/cart") return null;
-
-  if (quantity === 0) {
-    return (
-      <Link to={cartTarget} className="floating-cart floating-cart-empty" aria-label="Otvoriť prázdny košík">
-        <span>
-          <strong>Košík je prázdny</strong>
-          <small>Vyberte si z ponuky</small>
-        </span>
-      </Link>
-    );
-  }
+  if (!isGuestArea || location.pathname === "/cart" || quantity === 0) return null;
 
   return (
-    <Link to={cartTarget} className="floating-cart" aria-label="Otvoriť košík">
-      <span className="floating-cart-count">{quantity}</span>
-      <span>
-        <strong>Pozrieť košík</strong>
-        <small>{total.toFixed(2)} €</small>
-      </span>
+    <Link to={cartTarget} className="floating-cart" aria-label="Zobraziť košík">
+      <div className="floating-cart-icon-wrapper">
+        <ShoppingCart className="w-5 h-5" />
+        <span className="floating-cart-badge">{quantity}</span>
+      </div>
+      <span className="floating-cart-text">Košík</span>
+      <span className="floating-cart-total">€{total.toFixed(2)}</span>
     </Link>
   );
 }
+
