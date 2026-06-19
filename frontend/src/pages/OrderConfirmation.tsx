@@ -21,7 +21,9 @@ export default function OrderConfirmation() {
       <h1>Ďakujeme</h1>
       {order ? (
         <p>
-          Objednávka #{order.id.slice(0, 8)} má stav {getOrderStatusLabel(order.status)} a sumu {order.totalPrice.toFixed(2)} €.
+          Objednávka #{order.id.slice(0, 8)} bola prijatá. <br />
+          Stav: {getOrderStatusLabel(order.status)}<br />
+          Suma na zaplatenie: <b> {order.totalPrice.toFixed(2)} € </b>
         </p>
       ) : (
         <p>Načítavam objednávku...</p>
