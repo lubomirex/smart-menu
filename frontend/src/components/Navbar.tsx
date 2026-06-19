@@ -28,7 +28,7 @@ export default function Navbar() {
   }));
   const links = isAuthPage || (isAdminArea && !isAuthenticated) ? [] : isAdminArea ? adminLinks : isAdminPreview ? previewGuestLinks : guestLinks;
   const brandTarget = isAdminPreview ? "/admin/dashboard" : "/";
-  const brandText = isAdminPreview ? "← Admin" : isGuestSubpage ? "← Menu" : "Café";
+  const brandText = isAdminPreview ? "← Admin" : isGuestSubpage ? "← Menu" : "Café SmartMenu";
   const [tableNumber, setTableNumber] = useState(() => localStorage.getItem("smartmenuai_table_number") ?? "7");
 
   function logout() {

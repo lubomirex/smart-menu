@@ -379,11 +379,11 @@ input, select { border: 1px solid #cbd6c8; border-radius: 6px; padding: 0.75rem;
   .admin-preview-mode .menu-heading { padding-top: 0.7rem; }
   .menu-heading .eyebrow, .menu-heading .recommendation { display: none; }
   .menu-heading h1 { font-family: Georgia, "Times New Roman", serif; font-size: 1.75rem; }
-  .sticky-category-bar { position: fixed; top: 64px; left: 0; right: 0; width: 100%; z-index: 75; padding: 0.75rem 1rem; margin: 0; background: rgba(255, 250, 240, 0.97); border-bottom: 1px solid #e4d8bd; box-shadow: 0 8px 18px rgba(43, 22, 14, 0.08); backdrop-filter: blur(10px); }
-  .category-list { gap: 0.65rem; padding-bottom: 0; scrollbar-width: none; scroll-behavior: smooth; }
+  .sticky-category-bar { position: fixed; top: 64px; left: 0; right: 0; width: 100%; z-index: 75; padding: 0.75rem 0; margin: 0; background: rgba(255, 250, 240, 0.97); border-bottom: 1px solid #e4d8bd; box-shadow: 0 8px 18px rgba(43, 22, 14, 0.08); backdrop-filter: blur(10px); }
+  .category-list { gap: 0.65rem; padding: 0 1rem; scrollbar-width: none; scroll-behavior: smooth;}
   .category-list::-webkit-scrollbar { display: none; }
   .category-list button:first-child { display: none; }
-  .category-list button { border: 0; border-radius: 999px; background: #ead9b8; color: #7b5d3f; padding: 0.72rem 1.05rem; font-weight: 900; max-width: none; flex: 0 0 auto; box-shadow: inset 0 0 0 1px rgba(43, 22, 14, 0.04); }
+  .category-list button { border: 0; border-radius: 999px; background: #ead9b8; color: #7b5d3f; padding: 0.5rem 1.0rem; font-weight: 700; max-width: none; flex: 0 0 auto; box-shadow: inset 0 0 0 1px rgba(43, 22, 14, 0.04); }
   .category-list .selected { background: #2b160e; color: #fff7e8; }
   .product-grid { display: grid; grid-template-columns: 1fr; gap: 0.85rem; padding: 0 1rem 1.5rem; scroll-margin-top: 132px; }
   .product-card { min-height: 0; display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 0.85rem; align-items: center; padding: 0.75rem; border: 1px solid #e1d6c3; border-radius: 18px; background: rgba(255, 252, 246, 0.94); box-shadow: 0 8px 22px rgba(43, 22, 14, 0.1); }
@@ -439,17 +439,19 @@ input, select { border: 1px solid #cbd6c8; border-radius: 6px; padding: 0.75rem;
   transform: translateX(-50%);
   background-color: #2b160e;
   color: #fff7e8;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.25rem;
   border-radius: 9999px;
   box-shadow: 0 10px 25px rgba(43, 22, 14, 0.22);
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  justify-content: center;
+  gap: 0.6rem;
   z-index: 1000;
   font-weight: 600;
   transition: all 0.3s ease;
   text-decoration: none;
   border: 1px solid rgba(255, 247, 232, 0.1);
+  width: 180px;
 }
 
 .floating-cart:hover {

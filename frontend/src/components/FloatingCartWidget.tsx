@@ -27,11 +27,7 @@ export default function FloatingCartWidget() {
 
   return (
     <Link to={cartTarget} className="floating-cart" aria-label="Zobraziť košík">
-      <div className="floating-cart-icon-wrapper">
-        <ShoppingCart className="w-5 h-5" />
-        <span className="floating-cart-badge">{quantity}</span>
-      </div>
-      <span className="floating-cart-text">Košík</span>
+      <span className="floating-cart-text">Košík ({quantity})</span>
       <span className="floating-cart-total">€{total.toFixed(2)}</span>
     </Link>
   );
