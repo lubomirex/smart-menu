@@ -13,8 +13,12 @@ import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProductManagement from "./pages/ProductManagement";
 import OrderManagement from "./pages/OrderManagement";
+import { useEffect } from "react";
+import { usePush } from "./hooks/usePush";
 
 export default function App() {
+  usePush(); // Tento hook teraz automaticky zaregistruje SW ak už máme povolenie z minula
+
   return (
     <div className="app-shell">
       <Navbar />
@@ -45,3 +49,4 @@ export default function App() {
     </div>
   );
 }
+  
