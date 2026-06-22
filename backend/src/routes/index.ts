@@ -11,3 +11,6 @@ apiRoutes.use("/products", productRoutes);
 apiRoutes.use("/categories", categoryRoutes);
 apiRoutes.use("/orders", orderRoutes);
 apiRoutes.use("/tables", tableRoutes);
+apiRoutes.use("/notifications", async (req, res) => {
+    res.status(501).json({ error: "Not implemented" });
+});

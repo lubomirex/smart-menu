@@ -13,8 +13,33 @@ import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProductManagement from "./pages/ProductManagement";
 import OrderManagement from "./pages/OrderManagement";
+import { registerDevice } from "./utils/deviceStorage";
+import { useEffect } from "react";
+
+// poziadanie o povolenie notifikacii
+function requestNotificationPermission() {
+  if (!("Notification" in window)) {
+    console.log("This browser does not support notifications");
+    return;
+  }
+
+  if (Notification.permission === "granted") {
+    return;
+  }
+
+  if (Notification.permission !== "denied") {
+    Notification.requestPermission().catch((error) => {
+      console.error("Failed to request notification permission:", error);
+    });
+  }
+}
 
 export default function App() {
+  useEffect(() => {
+    requestNotificationPermission(); // poziadanie push api povolenie
+    registerDevice(); // registracia zariadenia
+  }, []);
+
   return (
     <div className="app-shell">
       <Navbar />
@@ -45,3 +70,4 @@ export default function App() {
     </div>
   );
 }
+  
