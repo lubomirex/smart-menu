@@ -8,11 +8,17 @@ self.addEventListener('push', (event) => {
 
   const options = {
     body: payload.message || '',
-    tag: payload.orderId || undefined,  // nahradi stariu notifikaciu s rovnakym tagom
     data: payload,
     renotify: true,
-    icon: '/favicon.ico'
+    icon: '/icon-192.png'
   };
+
+  if (payload.orderId) {
+    options.tag = payload.orderId;
+  } else {
+    // If we renotify, we MUST have a tag. If we don't have a tag, don't renotify.
+    options.renotify = false;
+  }
 
   event.waitUntil(
     self.registration.showNotification(payload.title || 'Notifikácia', options)

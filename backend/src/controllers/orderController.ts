@@ -1,4 +1,4 @@
-﻿import type { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { OrderStatus, Prisma } from "@prisma/client";
 import { z } from "zod";
 import { prisma } from "../prisma/client.js";
@@ -39,12 +39,19 @@ export async function createOrder(req: Request, res: Response) {
   // linknutie objeandvky na cislo zaraidenia
   if (data.deviceId) {
     try {
-      await prisma.orderNotification.create({
-        data: {
-          orderId: order.id,
-          deviceId: data.deviceId,
-        },
+      const device = await prisma.device.findUnique({
+        where: { deviceId: data.deviceId }
       });
+      if (device) {
+        await prisma.orderNotification.create({
+          data: {
+            orderId: order.id,
+            deviceId: device.id,
+          },
+        });
+      } else {
+        console.warn(`Device with deviceId ${data.deviceId} not found, skipping order link.`);
+      }
     } catch (error) {
       console.error(`Failed to create OrderNotification for device ${data.deviceId}:`, error);
       // dont throw - logni notifikaciu, ale objednavka sa vytvori aj tak

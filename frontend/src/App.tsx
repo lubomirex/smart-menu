@@ -14,32 +14,10 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ProductManagement from "./pages/ProductManagement";
 import OrderManagement from "./pages/OrderManagement";
 import { useEffect } from "react";
-import usePush from "./hooks/usePush";
-
-// poziadanie o povolenie notifikacii
-function requestNotificationPermission() {
-  if (!("Notification" in window)) {
-    console.log("This browser does not support notifications");
-    return;
-  }
-
-  if (Notification.permission === "granted") {
-    return;
-  }
-
-  if (Notification.permission !== "denied") {
-    Notification.requestPermission().catch((error) => {
-      console.error("Failed to request notification permission:", error);
-    });
-  }
-}
+import { usePush } from "./hooks/usePush";
 
 export default function App() {
-  useEffect(() => {
-    requestNotificationPermission(); // usePush() sa postara o SW + subskripciu
-  }, []);
-
-  usePush(); // hook pre registraciu service workera a push notifikacii
+  usePush(); // Tento hook teraz automaticky zaregistruje SW ak už máme povolenie z minula
 
   return (
     <div className="app-shell">

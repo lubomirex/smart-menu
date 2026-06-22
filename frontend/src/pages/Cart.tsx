@@ -5,6 +5,7 @@ import { api } from "../api/client";
 import type { CartLine, Order, OrderStatus } from "../types";
 import { readGuestCart, readGuestOrderHistory, saveGuestCart, saveGuestOrderHistory } from "../utils/guestStorage";
 import { getOrCreateDeviceId } from "../utils/deviceStorage";
+import { usePush } from "../hooks/usePush";
 
 type StoredOrder = {
   id: string;
@@ -55,7 +56,11 @@ export default function Cart() {
     saveGuestOrderHistory(nextHistory);
   }
 
+  const { requestPushPermission } = usePush();
+
   async function submitOrder() {
+    await requestPushPermission(); // Vypýta si povolenie (ak ho ešte nemáme), až po kliknutí používateľom
+
     const response = await api.post<Order>("/orders", {
       tableId: localStorage.getItem("smartmenuai_table_id"),
       items: cart.map((line) => ({ productId: line.product.id, quantity: line.quantity })),
