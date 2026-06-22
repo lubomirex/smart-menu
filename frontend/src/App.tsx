@@ -13,8 +13,8 @@ import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProductManagement from "./pages/ProductManagement";
 import OrderManagement from "./pages/OrderManagement";
-import { registerDevice } from "./utils/deviceStorage";
 import { useEffect } from "react";
+import usePush from "./hooks/usePush";
 
 // poziadanie o povolenie notifikacii
 function requestNotificationPermission() {
@@ -36,9 +36,10 @@ function requestNotificationPermission() {
 
 export default function App() {
   useEffect(() => {
-    requestNotificationPermission(); // poziadanie push api povolenie
-    registerDevice(); // registracia zariadenia
+    requestNotificationPermission(); // usePush() sa postara o SW + subskripciu
   }, []);
+
+  usePush(); // hook pre registraciu service workera a push notifikacii
 
   return (
     <div className="app-shell">

@@ -1,4 +1,5 @@
 import { prisma } from "../prisma/client.js";
+import { webpush } from "../controllers/notificationController.js";
 
 export async function findDevicesByOrderOrigin(orderId: string): Promise<any[]> {
   // Find all devices that are linked to this order through OrderNotification
@@ -17,27 +18,20 @@ export async function findDevicesByOrderOrigin(orderId: string): Promise<any[]> 
 export async function sendPushNotification(
   deviceId: string,
   title: string,
-  message: string
+  message: string,
+  orderId?: string
 ): Promise<void> {
   try {
-    // Log the notification (placeholder for actual push implementation)
-    console.log(`📱 Push notification sent to device ${deviceId}: ${title} - ${message}`);
+    const device = await prisma.device.findUnique({ where: { id: deviceId } });
+    if (!device?.pushToken) {
+      console.log(`Device ${deviceId} has no pushToken, skipping push`);
+      return;
+    }
 
-    // TODO: Implement actual push notifications using web-push library
-    // This would require:
-    // 1. npm install web-push
-    // 2. Fetch pushToken from device in DB
-    // 3. Use webpush.sendNotification(pushToken, payload)
-    // Example:
-    // const device = await prisma.device.findUnique({ where: { id: deviceId } });
-    // if (device?.pushToken) {
-    //   const webpush = require('web-push');
-    //   await webpush.sendNotification(device.pushToken, {
-    //     title,
-    //     body: message,
-    //     icon: '/icon.png',
-    //   });
-    // }
+    const subscription = JSON.parse(device.pushToken);
+    const payload = JSON.stringify({ title, message, orderId });
+    await webpush.sendNotification(subscription, payload);
+    console.log(`📱 Push sent to device ${deviceId}: ${title}`);
   } catch (error) {
     console.error(`Failed to send push notification to device ${deviceId}:`, error);
     // Don't throw, just log - notifications are not critical
@@ -63,7 +57,7 @@ export async function notifyOrderStatusChange(
 
     await Promise.all(
       devices.map((device) =>
-        sendPushNotification(device.id, title, message)
+        sendPushNotification(device.id, title, message, orderId)
       )
     );
 

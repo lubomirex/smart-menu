@@ -4,6 +4,7 @@ import CartItem from "../components/CartItem";
 import { api } from "../api/client";
 import type { CartLine, Order, OrderStatus } from "../types";
 import { readGuestCart, readGuestOrderHistory, saveGuestCart, saveGuestOrderHistory } from "../utils/guestStorage";
+import { getOrCreateDeviceId } from "../utils/deviceStorage";
 
 type StoredOrder = {
   id: string;
@@ -57,7 +58,8 @@ export default function Cart() {
   async function submitOrder() {
     const response = await api.post<Order>("/orders", {
       tableId: localStorage.getItem("smartmenuai_table_id"),
-      items: cart.map((line) => ({ productId: line.product.id, quantity: line.quantity }))
+      items: cart.map((line) => ({ productId: line.product.id, quantity: line.quantity })),
+      deviceId: getOrCreateDeviceId()  // priradenie objednávky k zariadeniu pre push notifikácie
     });
     saveOrderHistory(response.data);
     saveCart([]);

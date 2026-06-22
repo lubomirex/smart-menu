@@ -1,17 +1,27 @@
-self.addEventListener("push", function (event) {
-    const data = event.data.json();
+self.addEventListener('push', (event) => {
+  let payload = { title: 'Aktualizácia objednávky', message: 'Stav tvojej objednávky sa zmenil.' };
+  try {
+    if (event.data) payload = event.data.json();
+  } catch (e) {
+    console.warn('push parse failed', e);
+  }
 
-    self.registration.showNotification('Order Update', {
-        body: data.message,
-        icon: '/favicon.ico',
-        tag: data.orderId, // zaistenie, ze notifikacia sa nahradi, ak uz existuje notifikacia s rovnakym tagom
-        data: { orderId: data.orderId } // pridanie orderId do dat notifikacie
-    });
+  const options = {
+    body: payload.message || '',
+    tag: payload.orderId || undefined,  // nahradi stariu notifikaciu s rovnakym tagom
+    data: payload,
+    renotify: true,
+    icon: '/favicon.ico'
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(payload.title || 'Notifikácia', options)
+  );
 });
 
 self.addEventListener('notificationclick', (event) => {
-    event.notification.close(); // zatvorenie notifikacie po kliknuti
-    const orderId = event.notification?.data?.orderId; // ziskanie orderId z dat notifikacie
-    const url = orderId ? '/order/' + orderId : '/'; // vytvorenie URL na detail objednavky
-    event.waitUntil(clients.openWindow(url)); // otvorenie URL v novom okne
+  event.notification.close();
+  const orderId = event.notification?.data?.orderId;
+  const url = orderId ? `/order-confirmation/${orderId}` : '/';  // zhodna s App.tsx routou
+  event.waitUntil(clients.openWindow(url));
 });
