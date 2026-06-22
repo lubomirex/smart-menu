@@ -4,6 +4,7 @@ SmartMenuAI is a full-stack SaaS starter for restaurants and cafes. Customers sc
 
 ## Demo & Screenshots
 ### Video Demo
+Video
 <video src="demo/demo.MP4" controls="controls" muted="muted" width="100%"></video>
 
 ### Screenshots
