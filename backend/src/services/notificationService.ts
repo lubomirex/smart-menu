@@ -52,8 +52,28 @@ export async function notifyOrderStatusChange(
     }
 
     // Send notification to each device
-    const title = "Order Status Update";
-    const message = `Your order status has changed to: ${newStatus}`;
+    let title = "Zmena stavu objednávky"; 
+    let message = "";
+
+    switch (newStatus) {
+      case "CONFIRMED":
+        message = "Práve sme potvrdili tvoju objednávku! 🥳";
+        break;
+      case "PREPARING":
+        message = "Už chystáme tvoju objednávku! 👩‍🍳";
+        break;
+      case "READY":
+        message = "Tvoja objednávka je hotová! ☕";
+        break;
+      case "DELIVERED":
+        message = "Doručili sme ti objednávku! 🍪";
+        break;
+      case "CANCELLED":
+        message = "Tvoja objednávka bola bohužiaľ zrušená. 😔";
+        break;
+      default:
+        message = "Stav vašej objednávky sa zmenil.";
+    }
 
     await Promise.all(
       devices.map((device) =>
