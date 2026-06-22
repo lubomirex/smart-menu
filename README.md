@@ -12,8 +12,7 @@ Video
   <img src="demo/IMG_6028.PNG" width="200" alt="Screenshot 1" />
   <img src="demo/IMG_6029.PNG" width="200" alt="Screenshot 2" />
   <img src="demo/IMG_6030.PNG" width="200" alt="Screenshot 3" />
-  <img src="demo/IMG_6036.PNG" width="200" alt="Screenshot 4" />
-  <img src="demo/IMG_6039.PNG" width="200" alt="Screenshot 5" />
+  <img src="demo/IMG_6039.PNG" width="200" alt="Screenshot 4" />
 </div>
 
 ## Tech Stack
