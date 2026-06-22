@@ -1,9 +1,10 @@
-﻿import type { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { OrderStatus, Prisma } from "@prisma/client";
 import { z } from "zod";
 import { prisma } from "../prisma/client.js";
+import { notifyOrderStatusChange } from "../services/notificationService.js";
 
-const orderSchema = z.object({ customerId: z.string().uuid().optional(), tableId: z.string().uuid().nullable().optional(), items: z.array(z.object({ productId: z.string().uuid(), quantity: z.number().int().positive() })).min(1) });
+const orderSchema = z.object({ customerId: z.string().uuid().optional(), tableId: z.string().uuid().nullable().optional(), deviceId: z.string().optional(), items: z.array(z.object({ productId: z.string().uuid(), quantity: z.number().int().positive() })).min(1) });
 const statusSchema = z.object({ status: z.nativeEnum(OrderStatus) });
 
 type OrderWithRelations = Prisma.OrderGetPayload<{ include: { customer: true; table: true; items: { include: { product: true } } } }>;
@@ -34,12 +35,41 @@ export async function createOrder(req: Request, res: Response) {
   const items = data.items.map((item) => { const product = productMap.get(item.productId); if (!product) throw new Error(`Product ${item.productId} is not available`); return { productId: item.productId, quantity: item.quantity, price: product.price }; });
   const totalPrice = items.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
   const order = await prisma.order.create({ data: { customerId: req.user?.customerId ?? data.customerId, tableId: data.tableId ?? undefined, totalPrice, items: { create: items } }, include: { customer: true, table: true, items: { include: { product: true } } } });
+  
+  // linknutie objeandvky na cislo zaraidenia
+  if (data.deviceId) {
+    try {
+      const device = await prisma.device.findUnique({
+        where: { deviceId: data.deviceId }
+      });
+      if (device) {
+        await prisma.orderNotification.create({
+          data: {
+            orderId: order.id,
+            deviceId: device.id,
+          },
+        });
+      } else {
+        console.warn(`Device with deviceId ${data.deviceId} not found, skipping order link.`);
+      }
+    } catch (error) {
+      console.error(`Failed to create OrderNotification for device ${data.deviceId}:`, error);
+      // dont throw - logni notifikaciu, ale objednavka sa vytvori aj tak
+    }
+  }
+  
   return res.status(201).json(serializeOrder(order));
 }
 
 export async function updateOrderStatus(req: Request, res: Response) {
   const data = statusSchema.parse(req.body);
-  const order = await prisma.order.update({ where: { id: paramId(req) }, data, include: { customer: true, table: true, items: { include: { product: true } } } });
+  const order = await prisma.order.update({ 
+    where: { id: paramId(req) }, 
+    data, 
+    include: { customer: true, table: true, items: { include: { product: true } } } });
+
+    await notifyOrderStatusChange(order.id, data.status); // Notify devices about the order status change
+
   return res.json(serializeOrder(order));
 }
 
