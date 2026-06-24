@@ -14,11 +14,11 @@ type StoredOrder = {
 };
 
 const statusTranslations: Record<string, string> = {
-  PENDING: "Prijatá",
-  PREPARING: "Pripravuje sa",
-  READY: "Pripravená",
-  DELIVERED: "Doručená",
-  CANCELLED: "Zrušená"
+  PENDING: "Práve sme potvrdili tvoju objednávku! 🥳",
+  PREPARING: "Už chystáme tvoju objednávku! 👩‍🍳",
+  READY: "Tvoja objednávka je hotová! ☕",
+  DELIVERED: "Doručili sme ti objednávku! 🍪",
+  CANCELLED: "Tvoja objednávka bola bohužiaľ zrušená. 😔"
 };
 
 export function useOrderStatusPolling() {
@@ -42,9 +42,9 @@ export function useOrderStatusPolling() {
 
           if (newStatus && newStatus !== order.status) {
             // Stav sa zmenil!
-            toast(`Objednávka je teraz: ${statusTranslations[newStatus] || newStatus}`, {
-              icon: 'ℹ️',
-            });
+            toast(statusTranslations[newStatus] || "Stav vašej objednávky sa zmenil.", 
+              
+            );
 
             // Aktualizujeme históriu
             const index = updatedHistory.findIndex((o) => o.id === order.id);
@@ -61,7 +61,7 @@ export function useOrderStatusPolling() {
       if (historyChanged) {
         saveGuestOrderHistory(updatedHistory);
       }
-    }, 15000); // Každých 15 sekúnd
+    }, 5000); // Každých 5 sekúnd
 
     return () => clearInterval(interval);
   }, []);

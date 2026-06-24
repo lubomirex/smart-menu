@@ -28,10 +28,8 @@ export default function App() {
 
     const handleMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === 'PUSH_RECEIVED') {
-        const { title, message } = event.data.payload || {};
-        toast(message || title || "Máte novú notifikáciu!", {
-          icon: '🔔',
-        });
+        // Odstránené zobrazenie toastu z push notifikácie, 
+        // pretože useOrderStatusPolling() sa stará o zobrazenie toastu pre zmenu stavu.
       }
     };
 
@@ -45,10 +43,18 @@ export default function App() {
   return (
     <div className="app-shell">
       <Toaster 
-        position="top-center" 
+        position="bottom-center" 
+        containerStyle={{
+          bottom: 100, 
+        }}
         toastOptions={{
-          className: 'moj-vlastny-toast',
-          duration: 5000,
+          duration: 4000,
+          style: {
+            background: '#2B160E', 
+            color: '#fff',         
+            borderRadius: '40px',
+            padding: '12px 20px',
+          }
         }} 
       />
       <Navbar />
