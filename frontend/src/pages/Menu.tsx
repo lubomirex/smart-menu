@@ -6,6 +6,7 @@ import ProductCard from "../components/ProductCard";
 import { api } from "../api/client";
 import type { CartLine, Category, Product } from "../types";
 import { readGuestCart, saveGuestCart } from "../utils/guestStorage";
+import { toast } from "react-hot-toast";
 
 type RestaurantTable = { id: string; number: number };
 
@@ -34,7 +35,6 @@ export default function Menu() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [activeCategory, setActiveCategory] = useState("all");
-  const [cartNotice, setCartNotice] = useState("");
 
   useEffect(() => {
     const tableId = new URLSearchParams(window.location.search).get("tableId");
@@ -68,8 +68,7 @@ export default function Menu() {
     const existing = cart.find((line) => line.product.id === product.id);
     const nextCart = existing ? cart.map((line) => line.product.id === product.id ? { ...line, quantity: line.quantity + 1 } : line) : [...cart, { product, quantity: 1 }];
     saveGuestCart(nextCart);
-    setCartNotice(`${product.name} je v košíku`);
-    window.setTimeout(() => setCartNotice(""), 2600);
+    toast.success(`${product.name} pridané do košíka`);
   }
 
   return (
@@ -95,13 +94,6 @@ export default function Menu() {
       <div className="sticky-category-bar">
         <CategoryList categories={localizedCategories} activeId={activeCategory} onSelect={setActiveCategory} />
       </div>
-
-      {cartNotice && (
-        <div className="add-toast" role="status">
-          <strong>Pridané do košíka</strong>
-          <span>{cartNotice}</span>
-        </div>
-      )}
 
       <div className="product-grid">
         {filteredProducts.map((product) => <ProductCard key={product.id} product={product} onAdd={addToCart} />)}

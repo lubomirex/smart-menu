@@ -15,12 +15,42 @@ import ProductManagement from "./pages/ProductManagement";
 import OrderManagement from "./pages/OrderManagement";
 import { useEffect } from "react";
 import { usePush } from "./hooks/usePush";
+import { useOrderStatusPolling } from "./hooks/useOrderStatusPolling";
+
+import { Toaster, toast } from "react-hot-toast";
 
 export default function App() {
   usePush(); // Tento hook teraz automaticky zaregistruje SW ak už máme povolenie z minula
+  useOrderStatusPolling(); // Nový hook pre polling objednávok bez Push API
+
+  useEffect(() => {
+    if (!("serviceWorker" in navigator)) return;
+
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data && event.data.type === 'PUSH_RECEIVED') {
+        const { title, message } = event.data.payload || {};
+        toast(message || title || "Máte novú notifikáciu!", {
+          icon: '🔔',
+        });
+      }
+    };
+
+    navigator.serviceWorker.addEventListener('message', handleMessage);
+
+    return () => {
+      navigator.serviceWorker.removeEventListener('message', handleMessage);
+    };
+  }, []);
 
   return (
     <div className="app-shell">
+      <Toaster 
+        position="top-center" 
+        toastOptions={{
+          className: 'moj-vlastny-toast',
+          duration: 5000,
+        }} 
+      />
       <Navbar />
       <main className="page-wrap">
         <Routes>

@@ -23,11 +23,11 @@ export default function FloatingCartWidget() {
     };
   }, []);
 
-  if (!isGuestArea || location.pathname === "/cart" || quantity === 0) return null;
+  if (!isGuestArea || location.pathname === "/cart") return null;
 
   return (
     <Link to={cartTarget} className="floating-cart" aria-label="Zobraziť košík">
-      <span className="floating-cart-text">Košík ({quantity})</span>
+      <span className="floating-cart-text">🛒 Košík</span>
       <span className="floating-cart-total">€{total.toFixed(2)}</span>
     </Link>
   );
