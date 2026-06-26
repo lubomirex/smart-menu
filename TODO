@@ -1,7 +1,8 @@
 // TODO
-- make floating cart visible even when it is empty
 - implement order status to navbar
 - implement language icon
-- ...
+- implement pay by sqaure option
+- check slovak banks api for sending 
+- check apple pay / google pay API as an payment option
 
 See more in google docs
