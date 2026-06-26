@@ -506,3 +506,100 @@ input, select { border: 1px solid #ead9b8; border-radius: 6px; padding: 0.75rem;
   color: #d1a02b;
 }
 
+/* QR CODE BUTTON STYLING */
+/* Tlačidlo na otvorenie */
+.qr-trigger-btn {
+  background: #b0522a;
+  color: #fff7e8;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  transition: background 0.2s ease;
+}
+
+.qr-trigger-btn:hover {
+  background: #94411f;
+}
+
+/* Prekrytie pozadia (Backdrop) */
+.qr-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.qr-drawer-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Samotný Bottom Sheet (Vysúvací panel) */
+.qr-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #f7efd8;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  box-shadow: 0 -10px 30px rgba(43, 22, 14, 0.15);
+  z-index: 1001;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Stav, kedy je panel vysunutý */
+.qr-drawer.active {
+  transform: translateY(0);
+}
+
+/* Obsah vo vnútri panela */
+.qr-drawer-content {
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.qr-drawer-content h3 {
+  margin: 0;
+  color: #2b160e;
+  font-size: 1.3rem;
+}
+
+.qr-drawer-content p {
+  color: #7d5b43;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* Zavrieť tlačidlo */
+.qr-close-btn {
+  background: #2b160e;
+  color: #fff7e8;
+  border: none;
+  padding: 0.7rem 2rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1rem;
+  width: 100%;
+}
