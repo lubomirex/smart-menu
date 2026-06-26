@@ -14,6 +14,7 @@ enum OrderStatus {
   READY
   COMPLETED
   CANCELLED
+  PAID
 }
 
 enum CustomerRole {

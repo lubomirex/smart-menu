@@ -13,6 +13,7 @@
     "@vitejs/plugin-react": "latest",
     "axios": "latest",
     "lucide-react": "^1.21.0",
+    "qrcode.react": "^4.2.0",
     "react": "latest",
     "react-dom": "latest",
     "react-hot-toast": "^2.6.0",
