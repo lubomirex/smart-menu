@@ -13,10 +13,50 @@ import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProductManagement from "./pages/ProductManagement";
 import OrderManagement from "./pages/OrderManagement";
+import { useEffect } from "react";
+import { usePush } from "./hooks/usePush";
+import { useOrderStatusPolling } from "./hooks/useOrderStatusPolling";
+
+import { Toaster, toast } from "react-hot-toast";
 
 export default function App() {
+  usePush(); // Tento hook teraz automaticky zaregistruje SW ak už máme povolenie z minula
+  useOrderStatusPolling(); // Nový hook pre polling objednávok bez Push API
+
+  useEffect(() => {
+    if (!("serviceWorker" in navigator)) return;
+
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data && event.data.type === 'PUSH_RECEIVED') {
+        // Odstránené zobrazenie toastu z push notifikácie, 
+        // pretože useOrderStatusPolling() sa stará o zobrazenie toastu pre zmenu stavu.
+      }
+    };
+
+    navigator.serviceWorker.addEventListener('message', handleMessage);
+
+    return () => {
+      navigator.serviceWorker.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
   return (
     <div className="app-shell">
+      <Toaster 
+        position="bottom-center" 
+        containerStyle={{
+          bottom: 100, 
+        }}
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#2B160E', 
+            color: '#fff',         
+            borderRadius: '40px',
+            padding: '12px 20px',
+          }
+        }} 
+      />
       <Navbar />
       <main className="page-wrap">
         <Routes>
@@ -45,3 +85,4 @@ export default function App() {
     </div>
   );
 }
+  
