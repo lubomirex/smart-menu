@@ -4,6 +4,8 @@ import { api } from "../api/client";
 import type { Order } from "../types";
 import { getOrderStatusLabel } from "../utils/orderStatus";
 import { QRCodeSVG } from "qrcode.react"; // Inštalované cez npm install qrcode.react
+import ApplePayButton from "apple-pay-button";
+
 
 // Pomocná funkcia na vytvorenie EPC QR formátu pre bankové aplikácie
 function generateEPCQRText(iban: string, recipientName: string, amount: number, variableSymbol: string) {
@@ -56,6 +58,9 @@ export default function OrderConfirmation() {
             Stav: {getOrderStatusLabel(order.status)}<br />
             Suma na zaplatenie: <b>{order.totalPrice.toFixed(2)} €</b>
           </p>
+
+          <ApplePayButton onClick={() => {
+              }} /> 
 
           {/* Tlačidlo na zobrazenie QR kódu */}
           <button 
