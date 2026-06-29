@@ -5,7 +5,9 @@ SmartMenuAI is a full-stack SaaS starter for restaurants and cafes. Customers sc
 ## Demo & Screenshots
 
 ### Screenshots
-<div style="display: flex; gap: 10px; overflow-x: auto;"><img src="demo/IMG_6063.PNG" width="200" alt="Screenshot 1" /><img src="demo/IMG_6064.PNG" width="200" alt="Screenshot 2" /><img src="demo/IMG_6065.PNG" width="200" alt="Screenshot 3" /><img src="demo/IMG_6066.PNG" width="200" alt="Screenshot 4" /><img src="demo/IMG_6067.PNG" width="200" alt="Screenshot 5" /><img src="demo/IMG_6068.PNG" width="200" alt="Screenshot 6" /></div>
+| | | | | | |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| <img src="demo/IMG_6063.PNG" width="160" alt="Screenshot 1" /> | <img src="demo/IMG_6064.PNG" width="160" alt="Screenshot 2" /> | <img src="demo/IMG_6065.PNG" width="160" alt="Screenshot 3" /> | <img src="demo/IMG_6066.PNG" width="160" alt="Screenshot 4" /> | <img src="demo/IMG_6067.PNG" width="160" alt="Screenshot 5" /> | <img src="demo/IMG_6068.PNG" width="160" alt="Screenshot 6" /> |
 
 ## Features
 
