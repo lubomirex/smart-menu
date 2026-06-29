@@ -48,30 +48,44 @@ export default function OrderConfirmation() {
     : "";
 
   return (
-    <section className="confirmation">
-      <p className="eyebrow">Objednávka prijatá</p>
-      <h1>Ďakujeme</h1>
+    <section className="guest-history-page">
+      <div className="cart-page-heading">
+        <p className="eyebrow">Objednávka prijatá</p>
+        <h1>Ďakujeme</h1>
+        <div className="cart-links">
+          <Link to={menuTarget} className="text-link">Späť do menu</Link>
+          <Link to={isAdminPreview ? "/history?preview=admin" : "/history"} className="text-link">Moje objednávky</Link>
+        </div>
+      </div>
+
       {order ? (
-        <>
-          <p>
-            Objednávka #{order.id.slice(0, 8)} bola prijatá. <br />
-            Stav: {getOrderStatusLabel(order.status)}<br />
-            Suma na zaplatenie: <b>{order.totalPrice.toFixed(2)} €</b>
-          </p>
+        <div className="guest-history-list">
+          <article className="history-row">
+            <div className="history-order-main">
+              <strong>Objednávka #{order.id.slice(0, 8)}</strong>
+              <span>Vaša objednávka bola úspešne prijatá.</span>
+            </div>
+            <span className={`status-pill status-${order.status.toLowerCase()}`}>{getOrderStatusLabel(order.status)}</span>
+            <strong>{order.totalPrice.toFixed(2)} €</strong>
 
-          <ApplePayButton onClick={() => {
-              }} /> 
+            <div style={{ gridColumn: "1 / -1", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem", marginTop: "0.5rem", width: "100%" }}>
+              <div style={{ display: "flex", width: "100%", height: "44px" }}>
+                <ApplePayButton onClick={() => {
+                  }} style={{ width: "100%", height: "100%", borderRadius: "8px" }} /> 
+              </div>
 
-          {/* Tlačidlo na zobrazenie QR kódu */}
-          <button 
-            className="qr-trigger-btn"
-            onClick={() => setIsQRDrawerOpen(true)}
-          >
-            <span>📱</span> Zaplatiť QR kódom
-          </button>
-        </>
+              <button 
+                className="qr-trigger-btn"
+                onClick={() => setIsQRDrawerOpen(true)}
+                style={{ margin: 0, width: "100%", height: "44px", justifyContent: "center", borderRadius: "8px", boxSizing: "border-box", display: "flex", alignItems: "center" }}
+              >
+                <span>📱</span> Zaplatiť QR kódom
+              </button>
+            </div>
+          </article>
+        </div>
       ) : (
-        <p>Načítavam objednávku...</p>
+        <p className="empty-cart-message">Načítavam objednávku...</p>
       )}
 
       {/* --- VYSUVACÍ PANEL --- */}
