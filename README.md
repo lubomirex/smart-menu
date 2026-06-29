@@ -3,17 +3,9 @@
 SmartMenuAI is a full-stack SaaS starter for restaurants and cafes. Customers scan a table QR code, browse the menu, place orders, and receive simple AI-style recommendations based on menu categories and cart contents.
 
 ## Demo & Screenshots
-### Video Demo
-Video
-<video src="demo/demo.MP4" controls="controls" muted="muted" width="100%"></video>
 
 ### Screenshots
-<div style="display: flex; gap: 10px; overflow-x: auto;">
-  <img src="demo/IMG_6028.PNG" width="200" alt="Screenshot 1" />
-  <img src="demo/IMG_6029.PNG" width="200" alt="Screenshot 2" />
-  <img src="demo/IMG_6030.PNG" width="200" alt="Screenshot 3" />
-  <img src="demo/IMG_6039.PNG" width="200" alt="Screenshot 4" />
-</div>
+<div style="display: flex; gap: 10px; overflow-x: auto;"><img src="demo/IMG_6063.PNG" width="200" alt="Screenshot 1" /><img src="demo/IMG_6064.PNG" width="200" alt="Screenshot 2" /><img src="demo/IMG_6065.PNG" width="200" alt="Screenshot 3" /><img src="demo/IMG_6066.PNG" width="200" alt="Screenshot 4" /><img src="demo/IMG_6067.PNG" width="200" alt="Screenshot 5" /><img src="demo/IMG_6068.PNG" width="200" alt="Screenshot 6" /></div>
 
 ## Features
 
